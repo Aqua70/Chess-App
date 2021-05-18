@@ -1,4 +1,5 @@
 const firebase = require('firebase')
+const oauthObj = require("./oauth");
 require("firebase/firestore");
 
 const firebaseConfig = {
@@ -20,21 +21,20 @@ let database = firebase.firestore()
 const tokens = database.collection("tokens");
 
 const storeToken = (email, token) =>{
-    tokens.doc(email).set({"token" : token.token});
+    tokens.doc(email).set({token : token.token});
 }
 
 const getTokenFromMail = (email) =>{
-    if (!email){
-        return Promise(-1);
-    }
     return tokens.doc(email).get()
     .then((doc) => {
-    if (!doc.exists){
-        return -1
-    }
-        return doc.data()
+        if (!doc.exists){
+            return -1
+        }  
+        return oauthObj.client.createToken(doc.data().token)
     });
 }
+
+
 
 exports.storeToken = storeToken
 exports.getTokenFromMail = getTokenFromMail

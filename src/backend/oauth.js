@@ -1,6 +1,6 @@
 
 const oauth = require('simple-oauth2');
-
+const axios = require('axios').default
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -34,13 +34,18 @@ const authorizationUri = client.authorizeURL({
 
 const getTokenFromCode = (code) =>{
   return client.getToken({
-  code: code, 
-  redirect_uri: redirectUri
+    code: code, 
+    redirect_uri: redirectUri
   })
 };
+
+
+
+
 exports.authorizationUri = authorizationUri
 exports.redirectUri = redirectUri
 exports.getTokenFromCode = getTokenFromCode
+exports.client = client
 
 
 

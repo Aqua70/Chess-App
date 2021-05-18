@@ -24,7 +24,7 @@ app.get('/auth', (_, res) => {
 
 var emailObj = null;
 app.get('/callback', async (req, res) => {
-
+  
   const token = await oauthObj.getTokenFromCode(req.query.code);
 
   emailObj = await API.getEmail(token);
@@ -32,8 +32,9 @@ app.get('/callback', async (req, res) => {
   firebaseObj.storeToken(emailObj.email, token);
 
   res.writeHead(302, {
-    Location: `http://localhost:3000/temp`
+    Location: `http://localhost:3000/temp`,
   });
+  
   res.end();
   
 });
@@ -43,14 +44,23 @@ app.get('/user', async (req, res) => {
   // Get token from firebase
 
   // Remove this later once we get email from the req object
-  await setTimeout(() => {}, 1000)
+  if (!emailObj){
+    res.end()
+    return
+}
+await setTimeout(() => {}, 1000)
   
   
   const token = await firebaseObj.getTokenFromMail(emailObj.email)
   
-  const user = await API.getUser(token);
+  const user = await API.getUser(emailObj.email, token);
 
   res.send(user);
+});
+
+
+app.post("/setPassword", (req, res)=>{
+    
 });
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
