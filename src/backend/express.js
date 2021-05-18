@@ -50,7 +50,7 @@ app.get('/user', async (req, res) => {
 }
 await setTimeout(() => {}, 1000)
   
-  //asd
+
   const token = await firebaseObj.getTokenFromMail(emailObj.email)
   
   const user = await API.getUser(emailObj.email, token);
