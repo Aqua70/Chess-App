@@ -16,7 +16,6 @@ function App() {
   useEffect(() =>{
     getUser().then((user) => setUser(user));
   }, [])
-  console.log(user);
   
   return (
     <div>
@@ -31,7 +30,7 @@ function App() {
             </Route>
 
             <Route path="/">
-               {user === {} ? <Redirect to="/login"/> : <Temp/>}
+               {user === "" ? <Redirect to="/login"/> : <Temp/>}
             </Route>
 
             

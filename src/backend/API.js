@@ -4,7 +4,7 @@ const firebaseObj = require("./firebase")
 
 const checkRefresh = async (email) =>{
 
-    let token = firebaseObj.getTokenFromMail(email);
+    let token = await firebaseObj.getTokenFromMail(email);
 
     if(token.expired()){
         token = await token.refresh();
@@ -15,7 +15,7 @@ const checkRefresh = async (email) =>{
 }
 
 const getUser = async (email) =>{
-    token = await checkRefresh(email, token)
+    token = await checkRefresh(email);
     return fetch('https://lichess.org/api/account', {
     headers: {
       'Authorization': `Bearer ${token.token.access_token}`
@@ -29,6 +29,10 @@ const getEmail = (token) =>{
       'Authorization': `Bearer ${token.token.access_token}`
     }
   }).then(res => res.json());
+}
+
+const getGames = async (email) =>{
+  
 }
 
 exports.getUser = getUser

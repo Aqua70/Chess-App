@@ -24,13 +24,13 @@ const storeToken = (email, token) =>{
     tokens.doc(email).set({token : token.token});
 }
 
-const getTokenFromMail = (email) =>{
+const getTokenFromMail = (email) => {
     return tokens.doc(email).get()
     .then((doc) => {
         if (!doc.exists){
             return -1
-        }  
-        return oauthObj.client.createToken(doc.data().token)
+        } 
+        return oauthObj.client.createToken(doc.data().token);
     });
 }
 

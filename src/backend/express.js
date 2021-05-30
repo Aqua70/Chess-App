@@ -1,4 +1,4 @@
-
+var cookieParser = require('cookie-parser')
 const cors = require('cors')
 const express = require('express');
 const oauthObj = require("./oauth");
@@ -13,7 +13,9 @@ const port = process.env.PORT || 8087;
 
 const app = express();
 
-app.use(cors())
+app.use(cors());
+
+app.use(cookieParser());
 
 app.get('/', (_, res) => res.send('Hello<br><a href="/auth">Log in with lichess</a>'));
 
@@ -31,6 +33,9 @@ app.get('/callback', async (req, res) => {
  
   firebaseObj.storeToken(emailObj.email, token);
 
+  // TODO: encrypt email
+  res.cookie("email", emailObj.email);
+
   res.writeHead(302, {
     Location: `http://localhost:3000/temp`,
   });
@@ -41,19 +46,16 @@ app.get('/callback', async (req, res) => {
 
 app.get('/user', async (req, res) => {
 
-  // Get token from firebase
-
-  // Remove this later once we get email from the req object
-  if (!emailObj){
+  // TODO: decrypt encrypted email
+  var email = req.cookies.email;
+  if (!email){
     res.end()
     return
 }
-await setTimeout(() => {}, 1000)
+  // Get token from firebase
+  const token = await firebaseObj.getTokenFromMail(email)
   
-  //asd
-  const token = await firebaseObj.getTokenFromMail(emailObj.email)
-  
-  const user = await API.getUser(emailObj.email, token);
+  const user = await API.getUser(email, token);
 
   res.send(user);
 });
