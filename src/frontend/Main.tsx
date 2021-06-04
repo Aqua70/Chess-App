@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import MainHeader from "./MainHeader"
 // import {
 //   BrowserRouter as Router,
 //   Link,
@@ -12,19 +13,16 @@ import React, { useEffect, useState } from "react";
 import {getUser} from "./BackendFunctions"
 
 function Temp(props : any){
-    
-    const [user, setUser] = useState("");
+  
+    const [id, setId] = useState("");
 
-    useEffect( () =>{
-        getUser().then((u) => {
-            
-            setUser(JSON.stringify(u))
-        })
-    });
+
+
 
     return(
         <div>
-            {user}
+            <MainHeader setId={setId}></MainHeader>
+            {id}
         </div>
     )
 }

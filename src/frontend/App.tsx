@@ -7,7 +7,7 @@ import {
   Route,
   Redirect
 } from "react-router-dom";
-import Temp from './Temp'
+import Main from './Main'
 import {getUser} from "./BackendFunctions"
 
 function App() {
@@ -21,16 +21,13 @@ function App() {
     <div>
         <Router>
           <Switch>
-            {/* If the current URL is /about, this route is rendered
-                while the rest are ignored */}
-
 
             <Route path="/login">
                 <Login></Login>
             </Route>
 
             <Route path="/">
-               {user === "" ? <Redirect to="/login"/> : <Temp/>}
+               {user === "" ? <Redirect to="/login"/> : <Main/>}
             </Route>
 
             

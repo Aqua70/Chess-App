@@ -23,11 +23,16 @@ function Login(){
         aFunc()
     }, [])
 
+    const login = () =>{
+      document.location.href = authLink;
+    }
+
+
     return(
         <div>
             <Link to="/">To home page</Link>
             <br/>
-            <a href={authLink}>Login with lichess</a>
+            {authLink !== "" ? <button onClick={login}>Login using lichess</button> : "WAIT"}
             <br/>
             <div className="login-wrapper">
       <h1>Please Log In</h1>
