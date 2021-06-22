@@ -2,20 +2,23 @@ const fetch = require('node-fetch');
 const oauthObj = require("./oauth")
 const firebaseObj = require("./firebase")
 
-const checkRefresh = async (email) =>{
+var ndjsonStream = require('can-ndjson-stream');
+const ndjson = require('ndjson')
 
-    let token = await firebaseObj.getTokenFromMail(email);
+const checkRefresh = async (email, id) =>{
+
+    let token = await firebaseObj.getTokenFromUser(email, id);
 
     if(token.expired()){
         token = await token.refresh();
-        firebaseObj.storeToken(email, token)
+        firebaseObj.storeToken(email, id, token)
     }
 
     return token;
 }
 
-const getUser = async (email) =>{
-    token = await checkRefresh(email);
+const getUser = async (email, id) =>{
+    const token = await checkRefresh(email, id);
     return fetch('https://lichess.org/api/account', {
     headers: {
       'Authorization': `Bearer ${token.token.access_token}`
@@ -31,9 +34,15 @@ const getEmail = (token) =>{
   }).then(res => res.json());
 }
 
-const getGames = async (email) =>{
-  
+const getGameStream = async (email, id, gameId) =>{
+  const token = await checkRefresh(email, id);
+  return fetch(`https://lichess.org/api/board/game/stream/${gameId}`, {
+    headers: {
+      'Authorization': `Bearer ${token.token.access_token}`
+    }
+  }).then(res => res.body);
 }
 
 exports.getUser = getUser
 exports.getEmail = getEmail
+exports.getGameStream = getGameStream

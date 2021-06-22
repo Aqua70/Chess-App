@@ -32,7 +32,6 @@ function Header( {setId} : any ){
                 <input type="text" onChange={textChange}/>
                 <button type="submit" onClick={(e : any) => submitClick(e)}>Submit</button>
             </form>
-            {link}
         </div>
     )
 }

@@ -10,19 +10,28 @@ import MainHeader from "./MainHeader"
 //     return new URLSearchParams(useLocation().search);
 //   }
 
-import {getUser} from "./BackendFunctions"
+import {getUser, getGameStream} from "./BackendFunctions"
+
 
 function Temp(props : any){
   
-    const [id, setId] = useState("");
 
+
+    const onIdUpdate = async (id : string) =>{
+        const stream = await getGameStream(id);
+        console.log(stream);
+        
+
+    }
 
 
 
     return(
         <div>
-            <MainHeader setId={setId}></MainHeader>
-            {id}
+            <MainHeader setId={onIdUpdate}></MainHeader>
+
+
+
         </div>
     )
 }

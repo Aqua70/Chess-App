@@ -5,6 +5,17 @@ const oauthObj = require("./oauth");
 const firebaseObj = require("./firebase");
 const API = require('./API');
 
+
+let guid = () => {
+  let s4 = () => {
+      return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1);
+  }
+  //return id of format 'aaaaaaaa'-'aaaa'-'aaaa'-'aaaa'-'aaaaaaaaaaaa'
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
+
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
@@ -30,11 +41,13 @@ app.get('/callback', async (req, res) => {
   const token = await oauthObj.getTokenFromCode(req.query.code);
 
   emailObj = await API.getEmail(token);
- 
-  firebaseObj.storeToken(emailObj.email, token);
 
-  // TODO: encrypt email
+  const id = guid();
+
+  firebaseObj.storeToken(emailObj.email, id, token);
+
   res.cookie("email", emailObj.email);
+  res.cookie("id", id);
 
   res.writeHead(302, {
     Location: `http://localhost:3000/temp`,
@@ -46,23 +59,47 @@ app.get('/callback', async (req, res) => {
 
 app.get('/user', async (req, res) => {
 
-  // TODO: decrypt encrypted email
-  var email = req.cookies.email;
-  if (!email){
+  const email = req.cookies.email;
+  const id = req.cookies.id;
+
+  if (!email || !id){
     res.end()
     return
-}
-  // Get token from firebase
-  const token = await firebaseObj.getTokenFromMail(email)
+  }
   
-  const user = await API.getUser(email, token);
+  const user = await API.getUser(email, id);
 
   res.send(user);
 });
 
 
-app.post("/setPassword", (req, res)=>{
-    
-});
+app.get('/gameStream/:id', async (req, res) =>{
+    const gameId = req.params.id
+
+    const email = req.cookies.email;
+    const id = req.cookies.id;
+
+
+    if (!email || !id){
+      res.end()
+      return
+    }
+
+    const game = await API.getGameStream(email, id, gameId);
+    game.on("data", (buffer) =>{
+      const str = buffer.toString();
+
+      try{
+        const obj = JSON.parse(str);
+        console.log(obj);
+      }
+      catch (e){
+        console.log("empty");
+      }
+
+    })
+    res.send(game);
+})
+
 
 app.listen(port, () => console.log(`Server started on port ${port}`));

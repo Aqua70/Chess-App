@@ -20,14 +20,16 @@ let database = firebase.firestore()
 
 const tokens = database.collection("tokens");
 
-const storeToken = (email, token) =>{
-    tokens.doc(email).set({token : token.token});
+const storeToken = (email, id, token) =>{
+    tokens.doc(email).set({token : token.token, id});
 }
 
-const getTokenFromMail = (email) => {
+const getTokenFromUser = (email, id) => {
     return tokens.doc(email).get()
     .then((doc) => {
-        if (!doc.exists){
+
+        if (!doc.exists || doc.data().id !== id){
+            // TODO: throw error instead
             return -1
         } 
         return oauthObj.client.createToken(doc.data().token);
@@ -37,4 +39,4 @@ const getTokenFromMail = (email) => {
 
 
 exports.storeToken = storeToken
-exports.getTokenFromMail = getTokenFromMail
+exports.getTokenFromUser = getTokenFromUser
