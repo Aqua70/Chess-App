@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { PassThrough } from 'stream';
 
 
 const getAuthLink = async () =>{
@@ -11,18 +12,13 @@ const getUser = async () : Promise<Object> => {
     return userObject.data
 }
 
-const getGameStream = async (id : string) : Promise<Object> =>{
-    console.log(id);
+const getGameStream = async (id : string) : Promise<ReadableStreamDefaultReader<any> | undefined> =>{
     
-    const stream : any = (await axios.get(`/gameStream/${id}`)).data;
+    return fetch(`/gameStream/${id}`).then(res => {
+        // TODO: throw error on res.body is undefined
+        return res.body?.getReader()
+    });
 
-    // stream.on("data", () => {
-    //     console.log("ASD");
-        
-    // })
-    console.log(id);
-    
-    return stream;
 }
 
 

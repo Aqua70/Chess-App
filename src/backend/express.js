@@ -85,20 +85,22 @@ app.get('/gameStream/:id', async (req, res) =>{
       return
     }
 
-    const game = await API.getGameStream(email, id, gameId);
-    game.on("data", (buffer) =>{
-      const str = buffer.toString();
+    const game = (await API.getGameStream(email, id, gameId));
+    // game.on("data", (buffer) =>{
+    //   console.log(buffer);
+    //   // const str = buffer.toString();
 
-      try{
-        const obj = JSON.parse(str);
-        console.log(obj);
-      }
-      catch (e){
-        console.log("empty");
-      }
+    //   // try{
+    //   //   const obj = JSON.parse(str);
+    //   //   console.log(obj);
+    //   // }
+    //   // catch (e){
+    //   //   console.log("empty");
+    //   // }
 
-    })
-    res.send(game);
+    // })
+    game.pipe(res);
+    // console.log(game);
 })
 
 

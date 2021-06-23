@@ -27,7 +27,7 @@ function App() {
             </Route>
 
             <Route path="/">
-               {user === "" ? <Redirect to="/login"/> : <Main/>}
+               {user === "" ? <Redirect to="/login"/> : <Main user={user}/>}
             </Route>
 
             

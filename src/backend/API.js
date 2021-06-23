@@ -8,7 +8,7 @@ const ndjson = require('ndjson')
 const checkRefresh = async (email, id) =>{
 
     let token = await firebaseObj.getTokenFromUser(email, id);
-
+    // console.log(token, token.expired());
     if(token.expired()){
         token = await token.refresh();
         firebaseObj.storeToken(email, id, token)
