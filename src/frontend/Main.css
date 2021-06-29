@@ -1,0 +1,52 @@
+
+/* Create three unequal columns that floats next to each other */
+.column {
+    box-sizing: border-box;
+    float: left;
+    padding: 10px;
+    border-style: solid;
+    border-width: thin;
+    height: 100%;
+}
+  
+.left{
+    width: 25%;
+}
+
+.right{
+    width: 25%;
+}
+  
+.middle {
+    width: 50%;
+}
+
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+    width: 100%;
+  }
+
+
+  input[type=text]:focus {
+    outline: 0
+}
+
+.row{
+    box-sizing: border-box;
+    background-color: lightgrey;
+    height:85%;
+}
+
+.header{
+    background-color: rgb(180, 180, 180);
+    border-style: solid;
+    height: 15%;
+}
+
+.mainDiv{
+    height: 100%;
+}

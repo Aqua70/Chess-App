@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import MainHeader from "./MainHeader"
+import MainHeader from "./MainComponents/MainHeader"
+import MoveCard from "./MainComponents/MainMoveCard";
+import TimerColumn from "./MainComponents/MainTimerColumn";
 // import {
 //   BrowserRouter as Router,
 //   Link,
@@ -10,12 +12,14 @@ import MainHeader from "./MainHeader"
 //     return new URLSearchParams(useLocation().search);
 //   }
 
-import {getUser, getGameStream} from "./BackendFunctions"
+import {getUser, getGameStream} from "./BackendFunctions";
+import './Main.css';
 
 const NO_TIME_LIMIT = 2147483647;  
 
 function Main({user} : any){
   
+    const [gameId, setGameId] = useState("");
     const [moves, setMoves] = useState([]);
     const [whiteTime, setWhiteTime] = useState(NO_TIME_LIMIT);
     const [blackTime, setBlackTime] = useState(NO_TIME_LIMIT);
@@ -34,6 +38,7 @@ function Main({user} : any){
 
 
     const onIdUpdate = (id : string) =>{
+        setGameId(id);
         getGameStream(id).then(stream =>{
             
             const readStream = () =>{
@@ -81,11 +86,30 @@ function Main({user} : any){
 
 
     return(
-        <div>
-            <MainHeader setId={onIdUpdate}></MainHeader>
-            {moves}
-            <br></br>
-            {currTurn}
+        <div className={"mainDiv"}>
+            <div className={"header"}>
+            <MainHeader setId={onIdUpdate} gameObj={gameObj}></MainHeader>
+            </div>
+
+
+            <div className={"row"}>
+
+                {/* Have Timers in this column */}
+                <div className={"column left"}>
+                    <TimerColumn></TimerColumn>
+                </div>
+
+                <div className={"column middle"}>
+                    {gameId !== "" ? <MoveCard gameId={gameId} currTurn={currTurn} isWhite={isWhite} moves={moves} winner={gameObj.winner}/> : <></>}
+                </div>
+
+                {/* Have Last Move & possiblity to draw & possibility to resign in this column */}
+                <div className={"column right"}>
+
+                </div>
+
+
+            </div>
 
         </div>
     )

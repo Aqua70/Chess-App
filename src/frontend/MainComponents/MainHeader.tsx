@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 
-import {getUser} from "./BackendFunctions"
+import {getUser} from "../BackendFunctions"
 
 function Header( {setId} : any ){
     

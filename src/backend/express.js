@@ -28,6 +28,8 @@ app.use(cors());
 
 app.use(cookieParser());
 
+app.use(express.json());
+
 app.get('/', (_, res) => res.send('Hello<br><a href="/auth">Log in with lichess</a>'));
 
 app.get('/auth', (_, res) => {
@@ -85,23 +87,24 @@ app.get('/gameStream/:id', async (req, res) =>{
       return
     }
 
-    const game = (await API.getGameStream(email, id, gameId));
-    // game.on("data", (buffer) =>{
-    //   console.log(buffer);
-    //   // const str = buffer.toString();
+    const game = await API.getGameStream(email, id, gameId);
 
-    //   // try{
-    //   //   const obj = JSON.parse(str);
-    //   //   console.log(obj);
-    //   // }
-    //   // catch (e){
-    //   //   console.log("empty");
-    //   // }
-
-    // })
     game.pipe(res);
-    // console.log(game);
+
 })
+
+app.post("/makeMove", async (req, res) =>{
+  const move = req.body.move
+  const gameId = req.body.id
+
+
+  const email = req.cookies.email;
+  const id = req.cookies.id;
+
+  const success = await API.makeMove(email, id, gameId, move);
+  res.send(success);
+
+});
 
 
 app.listen(port, () => console.log(`Server started on port ${port}`));

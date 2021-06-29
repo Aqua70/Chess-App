@@ -21,9 +21,13 @@ const getGameStream = async (id : string) : Promise<ReadableStreamDefaultReader<
 
 }
 
+const makeMove = async (move : string, gameId : string) =>{
+    const outcome = await axios.post("/makeMove", {move, id : gameId});
+    return outcome.data;
+}
 
 
 
 
 
-export {getAuthLink, getUser, getGameStream}
+export {getAuthLink, getUser, getGameStream, makeMove}

@@ -43,6 +43,17 @@ const getGameStream = async (email, id, gameId) =>{
   }).then(res => res.body);
 }
 
+const makeMove = async (email, id, gameId, move) =>{
+  const token = await checkRefresh(email, id);
+  return fetch(`https://lichess.org/api/board/game/${gameId}/move/${move}`, {
+    headers: {
+      'Authorization': `Bearer ${token.token.access_token}`
+    },
+    method : 'POST'
+  }).then(res => res.json());
+}
+
 exports.getUser = getUser
 exports.getEmail = getEmail
 exports.getGameStream = getGameStream
+exports.makeMove = makeMove

@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import Main from './Main'
 import {getUser} from "./BackendFunctions"
-
+import './App.css';
 function App() {
 
   const [user, setUser] = useState({});
@@ -18,7 +18,7 @@ function App() {
   }, [])
   
   return (
-    <div>
+    <div className={"appDiv"}>
         <Router>
           <Switch>
 
