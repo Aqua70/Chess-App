@@ -15,14 +15,10 @@ import TimerColumn from "./MainComponents/MainTimerColumn";
 import {getUser, getGameStream} from "./BackendFunctions";
 import './Main.css';
 
-const NO_TIME_LIMIT = 2147483647;  
-
 function Main({user} : any){
   
     const [gameId, setGameId] = useState("");
     const [moves, setMoves] = useState([]);
-    const [whiteTime, setWhiteTime] = useState(NO_TIME_LIMIT);
-    const [blackTime, setBlackTime] = useState(NO_TIME_LIMIT);
     const [isWhite, setIsWhite] = useState(false);
     const [currTurn, setCurrTurn] = useState("white");
     const [gameObj, setGameObj] = useState({})
@@ -30,8 +26,6 @@ function Main({user} : any){
     const setValues = (stateObj : any) =>{
         
         setMoves(stateObj.moves.split(" "));
-        setWhiteTime(stateObj.wtime);
-        setBlackTime(stateObj.btime);
         setCurrTurn(stateObj.moves === "" ? "white" : stateObj.moves.split(" ").length % 2 === 0 ? "white" : "black");
         setGameObj(stateObj);
     }
@@ -52,7 +46,6 @@ function Main({user} : any){
                     var string = new TextDecoder().decode(value);
 
                     try{
-
                         var stateObj = JSON.parse(string);
                         if (!stateObj.error){
                             console.log(stateObj);
@@ -69,8 +62,6 @@ function Main({user} : any){
                             console.log("ERROR", stateObj.error);
                             
                         }
-                        
-
                     }
                     catch (e){
                         console.log("No input");
@@ -93,21 +84,21 @@ function Main({user} : any){
 
 
             <div className={"row"}>
+                {gameObj !== {} ?
+                    <>
+                    <div className={"column left"}>
+                        <TimerColumn gameObj={gameObj} isWhite={isWhite} currTurn={currTurn}></TimerColumn>
+                    </div>
 
-                {/* Have Timers in this column */}
-                <div className={"column left"}>
-                    <TimerColumn></TimerColumn>
-                </div>
+                    <div className={"column middle"}>
+                        {gameId !== "" ? <MoveCard gameId={gameId} currTurn={currTurn} isWhite={isWhite} moves={moves} winner={gameObj.winner}/> : <></>}
+                    </div>
 
-                <div className={"column middle"}>
-                    {gameId !== "" ? <MoveCard gameId={gameId} currTurn={currTurn} isWhite={isWhite} moves={moves} winner={gameObj.winner}/> : <></>}
-                </div>
-
-                {/* Have Last Move & possiblity to draw & possibility to resign in this column */}
-                <div className={"column right"}>
-
-                </div>
-
+                    {/* Have Last Move & possiblity to draw & possibility to resign in this column */}
+                    <div className={"column right"}>
+                    </div>
+                    </> 
+                    : <></>}
 
             </div>
 
