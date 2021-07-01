@@ -1,0 +1,37 @@
+.timerContainer{
+
+    height: 15%;
+    width: 100%;
+}
+
+.timer{
+      /* Create a flexible box that centers content vertically and horizontally */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  
+
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width:50%;
+  height: 100%;
+
+
+  font-size: 70px;
+
+  border-radius: 40px;
+}
+
+.black{
+    background-color: black;
+    color: white;
+}
+
+.white{
+    color: black;
+    background-color: white;
+}

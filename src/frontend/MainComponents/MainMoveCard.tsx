@@ -43,27 +43,40 @@ function MoveCard({gameId, currTurn, isWhite, moves, winner} : any){
                 {error}
             </h1>
 
-            <h1 className={"message"}>
-                Last move:
-                <br></br><br></br>
-                {moves[moves.length - 1]}
-            </h1>
-            <br></br>
-            <br></br>
-            <br></br>
-            {winner ? 
-            (winner === "white" && isWhite) || (winner !== "white" && !isWhite) ?
-            <h1 className={"good largeMessage"}>
-                The winner is {winner}!
-            </h1>
-            :
-            <h1 className={"bad largeMessage"}>
-                The winner is {winner}!
-            </h1>
-            
-            : <></>
-            }
-            
+            <div className={"lastMoves"}>
+
+                <div className={"halfMessage"}>
+                    <h1 className={"message"}>
+                        My last move:
+                        <br></br><br></br>
+                        {currTurn == "white" && isWhite || currTurn == "black" && !isWhite ? moves[moves.length - 2] : moves[moves.length - 1]}
+                    </h1>
+                </div>
+
+                <div className={"halfMessage"}>
+                    <h1 className={"messages"}>
+                        Opponent's last move:
+                        <br></br><br></br>
+                        {currTurn == "white" && isWhite || currTurn == "black" && !isWhite ? moves[moves.length - 1] : moves[moves.length - 2]}
+                    </h1>
+                </div>
+
+            </div>
+
+            <div className="winnerMessage">
+                {winner ? 
+                (winner === "white" && isWhite) || (winner !== "white" && !isWhite) ?
+                <h1 className={"good largeMessage"}>
+                    The winner is {winner}!
+                </h1>
+                :
+                <h1 className={"bad largeMessage"}>
+                    The winner is {winner}!
+                </h1>
+                
+                : <></>
+                }
+            </div>
 
         </div>
     )
