@@ -5,25 +5,24 @@
 }
 
 .timer{
-      /* Create a flexible box that centers content vertically and horizontally */
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
-  
+    display:inline-block;
 
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  width:50%;
-  height: 100%;
+    padding: 10px 20px 10px 20px;
 
 
-  font-size: 70px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
-  border-radius: 40px;
+    /* width:50%; */
+    /* height: 100%; */
+
+
+    font-size: 70px;
+
+    border-radius: 40px;
 }
 
 .black{

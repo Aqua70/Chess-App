@@ -1,6 +1,7 @@
 
 
 import React, { useEffect, useState, useRef } from "react";
+import { moveSyntheticComments } from "typescript";
 
 
 import {getUser, makeMove} from "../BackendFunctions"
@@ -14,6 +15,7 @@ function Timer({color, time} : any){
 
     function formatTimeLeft(time : number) {
         // The largest round integer less than or equal to the result of time divided being by 60.
+        
         time = Math.floor(time);
         const minutes : number = Math.floor(time / 60);
         
@@ -90,6 +92,7 @@ function TimerColumn({gameObj, isWhite, currTurn} : any){
     
 
     useEffect(()=>{
+
         setWTime(gameObj.wtime);
         setBTime(gameObj.btime);
         
