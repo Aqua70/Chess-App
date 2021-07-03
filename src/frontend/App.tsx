@@ -10,11 +10,22 @@ import {
 import Main from './Main'
 import {getUser} from "./BackendFunctions"
 import './App.css';
+import Loader from "react-loader-spinner";
 function App() {
 
   const [user, setUser] = useState({});
+  const [isBusy, setIsBusy] = useState(true);
+
+  const isEmpty = (obj : Object) =>{
+    console.log(obj, obj === "");
+    return obj === "";
+  }
+
   useEffect(() =>{
-    getUser().then((user) => setUser(user));
+    getUser().then((user) => {
+      setUser(user)
+      setIsBusy(false);
+    });
   }, [])
   
   return (
@@ -27,7 +38,12 @@ function App() {
             </Route>
 
             <Route path="/">
-               {user === "" ? <Redirect to="/login"/> : <Main user={user}/>}
+              
+               {isBusy ? 
+                <div className="loaderContainer">
+                  <Loader type="ThreeDots" color="dark" height="150px" width="150px"></Loader>
+                </div>
+               : isEmpty(user) ? <Redirect to="/login"/> : <Main user={user}/>}
             </Route>
 
             
@@ -35,6 +51,7 @@ function App() {
             
           </Switch>
         </Router>
+        
     </div>
   );
 }

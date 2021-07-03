@@ -91,7 +91,7 @@ function Main({user} : any){
                     </div>
 
                     <div className={"column middle"}>
-                        {gameId !== "" ? <MoveCard gameId={gameId} currTurn={currTurn} isWhite={isWhite} moves={moves} winner={gameObj.winner}/> : <></>}
+                        {gameId !== "" ? <MoveCard gameObj={gameObj} gameId={gameId} currTurn={currTurn} isWhite={isWhite} moves={moves} winner={gameObj.winner}/> : <></>}
                     </div>
 
                     {/* Have Last Move & possiblity to draw & possibility to resign in this column */}

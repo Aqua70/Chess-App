@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import "./MainMoveCard.css"
 import {getUser, makeMove} from "../BackendFunctions"
 
-function MoveCard({gameId, currTurn, isWhite, moves, winner} : any){
+function MoveCard({gameObj, gameId, currTurn, isWhite, moves, winner} : any){
     
 
     const [move, setMove] = useState("");
@@ -63,17 +63,24 @@ function MoveCard({gameId, currTurn, isWhite, moves, winner} : any){
 
             </div>
 
-            <div className="winnerMessage">
+            <div className="infoMessage">
                 {winner ? 
-                (winner === "white" && isWhite) || (winner !== "white" && !isWhite) ?
-                <h1 className={"good largeMessage"}>
+                <h1 className={((winner === "white" && isWhite) || (winner !== "white" && !isWhite) ? "good" : "bad") + " largeMessage"}>
                     The winner is {winner}!
                 </h1>
-                :
-                <h1 className={"bad largeMessage"}>
-                    The winner is {winner}!
+                : <></>
+                }
+                {gameObj.status === "aborted" ?
+                <h1 className={"info largeMessage"}>
+                    The game has been aborted.
                 </h1>
-                
+                : <></>
+                }
+                {
+                gameObj.status === "draw" ?
+                <h1 className={"info largeMessage"}>
+                    The game has been drawn.
+                </h1>
                 : <></>
                 }
             </div>

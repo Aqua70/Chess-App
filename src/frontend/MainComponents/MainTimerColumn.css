@@ -1,5 +1,4 @@
 .timerContainer{
-
     height: 15%;
     width: 100%;
 }
@@ -21,7 +20,6 @@
 
 
     font-size: 70px;
-
     border-radius: 40px;
 }
 
@@ -33,4 +31,21 @@
 .white{
     color: black;
     background-color: white;
+}
+
+
+@keyframes active{
+    0% {border-color: green;}
+    50% {border-color: #62cf33;}
+    100% {border-color: green;}
+}
+
+.activeTimer{
+    border: 2px solid black;
+    border-width: 8px;
+
+    animation-name: active;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    
 }

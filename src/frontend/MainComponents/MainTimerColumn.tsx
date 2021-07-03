@@ -7,16 +7,23 @@ import { moveSyntheticComments } from "typescript";
 import {getUser, makeMove} from "../BackendFunctions"
 
 import "./MainTimerColumn.css";
+import StatusButtons from "./StatusButtons";
+
 
 const NO_TIME_LIMIT = 2147483647;  
 const TIME_INTERVAL = 100;
 
-function Timer({color, time} : any){
+function Timer({color, isCurr, time} : any){
 
     function formatTimeLeft(time : number) {
         // The largest round integer less than or equal to the result of time divided being by 60.
-        
+        if (time === NO_TIME_LIMIT/1000){
+            return "\u221e";
+        }
         time = Math.floor(time);
+
+        
+
         const minutes : number = Math.floor(time / 60);
         
         // Seconds are the remainder of the time divided by 60 (modulus operator)
@@ -33,7 +40,7 @@ function Timer({color, time} : any){
 
     return(
         <div className={"timerContainer"}>
-            <div className={`${color} timer`}>
+            <div className={`${color} timer` + (isCurr ? " activeTimer" : "")}>
                 {formatTimeLeft(time)}
             </div>
         </div>
@@ -46,6 +53,9 @@ function TimerColumn({gameObj, isWhite, currTurn} : any){
     const [wTime, setWTime] = useState(0);
     const [bTime, setBTime] = useState(0);
     
+    const isTimerActive = () =>{
+        return !(gameObj.moves === undefined || gameObj.winner || gameObj.moves.length < 8 || gameObj.status === "aborted" || gameObj.status === "draw");
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     function interval(this: any, duration : number){
@@ -56,13 +66,10 @@ function TimerColumn({gameObj, isWhite, currTurn} : any){
             if(_this.baseline === undefined){
                 _this.baseline = new Date().getTime()
             }
-            if (gameObj.moves === undefined || gameObj.winner){
+            if (!isTimerActive() || wTime === NO_TIME_LIMIT){
                 return
             }
             
-            if (gameObj.moves.length < 8){
-                return
-            }
         
             if (currTurn === "white" && wTime !== NO_TIME_LIMIT){
                 setWTime(wTime -TIME_INTERVAL);
@@ -89,7 +96,6 @@ function TimerColumn({gameObj, isWhite, currTurn} : any){
         }
     }
     
-    
 
     useEffect(()=>{
 
@@ -104,18 +110,34 @@ function TimerColumn({gameObj, isWhite, currTurn} : any){
     }, [gameObj])
 
 
+    const getIsCurrMyClock = () =>{
+        if (!isTimerActive()){
+            return 0;
+        }
+        return !isWhite && currTurn === "black" || isWhite && currTurn === "white"
+    }
+
+    const getIsCurrTheirClock = () =>{
+        if (!isTimerActive()){
+            return 0;
+        }
+        return !getIsCurrMyClock();
+    }
+
+
     return(
-        <div style={{height:"100%", width: "100%", margin: "10px", boxsizing: "border-box"} as React.CSSProperties}>
+        <div style={{height:"100%", width: "100%", boxsizing: "border-box"} as React.CSSProperties}>
 
-            <div style={{height:"5%"} as React.CSSProperties}>
+            <div style={{height:"10%"} as React.CSSProperties}>
             </div>
 
-            <Timer color={isWhite ? "black" : "white"} time={isWhite ? bTime/1000 : wTime/1000}></Timer>
+            <Timer color={isWhite ? "black" : "white"} time={isWhite ? bTime/1000 : wTime/1000} isCurr={getIsCurrTheirClock()}></Timer>
 
-            <div style={{height:"55%"} as React.CSSProperties}>
+            <div style={{height:"45%"} as React.CSSProperties}>
+                <StatusButtons></StatusButtons>
             </div>
 
-            <Timer color={isWhite ? "white" : "black"} time={isWhite ? wTime/1000 : bTime/1000}></Timer>
+            <Timer color={isWhite ? "white" : "black"} time={isWhite ? wTime/1000 : bTime/1000} isCurr={getIsCurrMyClock()}></Timer>
             
         </div>
     )
