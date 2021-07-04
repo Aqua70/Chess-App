@@ -32,15 +32,18 @@ app.use(express.json());
 
 app.get('/', (_, res) => res.send('Hello<br><a href="/auth">Log in with lichess</a>'));
 
+app.get('/auth', (_, res) => {
+  // res.send("asd");
+  res.send({link : oauthObj.authorizationUri});
+});
 
+var emailObj = null;
 app.get('/callback', async (req, res) => {
+  
+  const token = await oauthObj.getTokenFromCode(req.query.code);
 
-  const code = req.query.code
-  const code_verifier = req.cookies.code
+  emailObj = await API.getEmail(token);
 
-
-  let token = await oauthObj.getTokenFromCode(code, code_verifier);
-  const emailObj  = await API.getEmail(token);
   const id = guid();
 
   firebaseObj.storeToken(emailObj.email, id, token);
@@ -49,10 +52,11 @@ app.get('/callback', async (req, res) => {
   res.cookie("id", id);
 
   res.writeHead(302, {
-    Location: `http://localhost:3000`,
+    Location: `http://localhost:3000/temp`,
   });
   
   res.end();
+  
 });
 
 app.get('/user', async (req, res) => {

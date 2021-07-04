@@ -1,7 +1,5 @@
-
-const oauth = require('simple-oauth2');
 const axios = require('axios').default
-
+const fetch = require('node-fetch');
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
@@ -9,43 +7,25 @@ if (process.env.NODE_ENV !== 'production') {
 /* --- Fill in your app config here --- */
 
 
-const client = new oauth.AuthorizationCode({
-  client: {
-    id: process.env.ID,
-    secret: process.env.SECRET
-  },
-  auth: {
-    tokenHost: 'https://oauth.lichess.org',
-    authorizePath: '/oauth/authorize',
-    tokenPath: '/oauth'
-  },
-  http: {
-    json: true
-  }
-});
+const tokenEndpoint = process.env.TOKENENDPOINT;
+const redirect_uri = process.env.CALLBACK
 
-const redirectUri = process.env.CALLBACK;
-
-const authorizationUri = client.authorizeURL({
-  redirect_uri: redirectUri,
-  scope: ['preference:read board:play email:read'], // see https://lichess.org/api#section/Introduction/Rate-limiting
-  state: Math.random().toString(36).substring(2)
-});
-
-const getTokenFromCode = (code) =>{
-  return client.getToken({
-    code: code, 
-    redirect_uri: redirectUri
-  })
+const getTokenFromCode = (code, code_verifier) =>{
+  return fetch(tokenEndpoint, {
+    method: "POST",
+    body: JSON.stringify({
+      grant_type: "authorization_code",
+      code:code, // That we have received in authorization request
+      code_verifier: code_verifier, // generated in the first step
+      redirect_uri: redirect_uri,
+      client_id: process.env.ID
+    }),
+    headers: { 'Content-Type': 'application/json' }
+  }).then(res => res.json());
 };
 
-
-
-
-exports.authorizationUri = authorizationUri
-exports.redirectUri = redirectUri
 exports.getTokenFromCode = getTokenFromCode
-exports.client = client
+
 
 
 

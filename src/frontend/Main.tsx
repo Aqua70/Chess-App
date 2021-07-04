@@ -21,13 +21,16 @@ function Main({user} : any){
     const [moves, setMoves] = useState([]);
     const [isWhite, setIsWhite] = useState(false);
     const [currTurn, setCurrTurn] = useState("white");
-    const [gameObj, setGameObj] = useState({})
+    const [gameObj, setGameObj] = useState({winner: ""})
+
+    const [gotvalue, setGotvalue] = useState(false);
 
     const setValues = (stateObj : any) =>{
         
         setMoves(stateObj.moves.split(" "));
         setCurrTurn(stateObj.moves === "" ? "white" : stateObj.moves.split(" ").length % 2 === 0 ? "white" : "black");
         setGameObj(stateObj);
+        setGotvalue(true);
     }
 
 
@@ -84,7 +87,7 @@ function Main({user} : any){
 
 
             <div className={"row"}>
-                {gameObj !== {} ?
+                {gotvalue ?
                     <>
                     <div className={"column left"}>
                         <TimerColumn gameObj={gameObj} isWhite={isWhite} currTurn={currTurn}></TimerColumn>

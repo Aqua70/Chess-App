@@ -20,11 +20,9 @@ let database = firebase.firestore()
 
 const tokens = database.collection("tokens");
 
-
 const storeToken = (email, id, token) =>{
-    tokens.doc(email).set({token : token, id});
+    tokens.doc(email).set({token : token.token, id});
 }
-
 
 const getTokenFromUser = (email, id) => {
     return tokens.doc(email).get()
@@ -34,7 +32,7 @@ const getTokenFromUser = (email, id) => {
             // TODO: throw error instead
             return -1
         } 
-        return doc.data().token;
+        return oauthObj.client.createToken(doc.data().token);
     });
 }
 

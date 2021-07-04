@@ -27,6 +27,17 @@ const makeMove = async (move : string, gameId : string) =>{
 }
 
 
+const setCode = async (codeId : string) => {
+    const outcome = await axios.post("/setCode", {codeId});
+    return outcome.data;
+}
+
+const setToken = async (codeId : string) =>{
+    const outcome = await axios.post("/setToken", {codeId});
+    return outcome.data;
+}
+
+
 
 
 
