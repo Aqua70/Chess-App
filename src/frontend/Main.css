@@ -43,6 +43,8 @@
 .header{
     background-color: rgb(180, 180, 180);
     border-style: solid;
+    border-left: 0;
+    border-right: 0;
     height: 15%;
 }
 

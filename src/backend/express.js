@@ -125,7 +125,16 @@ app.get('/gameStream/:id', async (req, res) =>{
 
     const game = await API.getGameStream(email, id, gameId);
     // console.log(game);
+    // const stream = ndjson.parse();
+
     game.pipe(res);
+
+    // stream.on("data", (chunk) =>{
+    //   console.log(chunk);
+    // })
+
+    // stream.pipe(res);
+    // res.end();
 
 })
 
@@ -142,7 +151,7 @@ app.post("/makeMove", async (req, res) =>{
 
 });
 
-app.get("/abort/:id", async (req, res) =>{
+app.post("/abort/:id", async (req, res) =>{
   const gameId = req.params.id;
   const email = req.cookies.email;
   const id = req.cookies.id;
@@ -151,25 +160,33 @@ app.get("/abort/:id", async (req, res) =>{
     res.end()
     return
   }
-  const success = await API.abort(id, email ,gameId);
-  res.send(success);
+  const success = await API.abort(email,id,gameId);
+  success.pipe(res);
 });
 
-app.get("/draw/:id/:accept", async (req, res) =>{
-  const accept = req.params.yesno;
+app.post("/draw/:id/:accept", async (req, res) =>{
+  const accept = req.params.accept;
   const gameId = req.params.id;
   const email = req.cookies.email;
   const id = req.cookies.id;
+
+  console.log(accept, gameId);
 
   if (!email || !id){
     res.end()
     return
   }
-  const success = await API.draw(id, email, gameId, accept);
-  res.send(success);
+  const success = await API.draw(email, id, gameId, accept);
+
+  // success.on("data", (chunk)=>{
+  //   var string = new TextDecoder().decode(chunk);
+  //   console.log(string);
+  // })
+
+  success.pipe(res);
 });
 
-app.get("/resign/:id/", async (req, res) =>{
+app.post("/resign/:id/", async (req, res) =>{
   const gameId = req.params.id;
   const email = req.cookies.email;
   const id = req.cookies.id;
@@ -178,8 +195,8 @@ app.get("/resign/:id/", async (req, res) =>{
     res.end()
     return
   }
-  const success = await API.resign(id, email, gameId);
-  res.send(success);
+  const success = await API.resign(email, id, gameId);
+  success.pipe(res);
 });
 
 app.listen(port, () => console.log(`Server started on port ${port}`));

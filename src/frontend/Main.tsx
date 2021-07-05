@@ -1,22 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MainHeader from "./MainComponents/MainHeader"
 import MoveCard from "./MainComponents/MainMoveCard";
 import TimerColumn from "./MainComponents/MainTimerColumn";
-// import {
-//   BrowserRouter as Router,
-//   Link,
-//   useLocation
-// } from "react-router-dom";
 
-// function useQuery() {
-//     return new URLSearchParams(useLocation().search);
-//   }
 
-import {getUser, getGameStream} from "./BackendFunctions";
+import {getGameStream} from "./BackendFunctions";
 import './Main.css';
 
 function Main({user} : any){
-  
+    
     const [gameId, setGameId] = useState("");
     const [moves, setMoves] = useState([]);
     const [isWhite, setIsWhite] = useState(false);
@@ -41,33 +33,47 @@ function Main({user} : any){
             const readStream = () =>{
                 stream?.read().then(({done, value}) =>{
                     
+                    var string = new TextDecoder().decode(value);
+                    
+                    const jsons = string.split("\n");
+
+                    jsons.forEach((json) =>{
+
+                        try{
+                            var stateObj = JSON.parse(json);
+                            console.log(stateObj);
+                            
+                            if (!stateObj.error){
+                                if (stateObj.type === "gameFull"){
+                                    // This means this is the first call to read
+                                    
+                                    setIsWhite(stateObj.white.id === user.id);
+                                    stateObj = stateObj.state;
+                                    setValues(stateObj);
+                                }
+                                else if (stateObj.type === "gameState"){
+                                    setValues(stateObj);
+                                }
+                                else if (stateObj.type === "chatLine"){
+                                    // DO SOMETHING WITH CHAT
+                                }
+                                
+                                
+                            }
+                            else{
+                                console.log("ERROR", stateObj.error);
+                            }
+
+                        }
+                        catch (e){
+                        }
+
+                    })
+                    
+
                     if (done){
                         stream.releaseLock();
                         return;
-                    }
-
-                    var string = new TextDecoder().decode(value);
-
-                    try{
-                        var stateObj = JSON.parse(string);
-                        if (!stateObj.error){
-                            console.log(stateObj);
-                            if (stateObj.state){
-                                // This means this is the first call to read
-                                
-                                setIsWhite(stateObj.white.id === user.id);
-                                stateObj = stateObj.state;
-                            }
-                            
-                            setValues(stateObj);
-                        }
-                        else{
-                            console.log("ERROR", stateObj.error);
-                            
-                        }
-                    }
-                    catch (e){
-                        console.log("No input");
                     }
                     readStream();
                 })
@@ -82,24 +88,24 @@ function Main({user} : any){
     return(
         <div className={"mainDiv"}>
             <div className={"header"}>
-            <MainHeader setId={onIdUpdate} gameObj={gameObj}></MainHeader>
+                <MainHeader setId={onIdUpdate} gameObj={gameObj}></MainHeader>
             </div>
 
 
             <div className={"row"}>
                 {gotvalue ?
                     <>
-                    <div className={"column left"}>
-                        <TimerColumn gameObj={gameObj} isWhite={isWhite} currTurn={currTurn}></TimerColumn>
-                    </div>
+                        <div className={"column left"}>
+                            <TimerColumn gameId={gameId} gameObj={gameObj} isWhite={isWhite} currTurn={currTurn}></TimerColumn>
+                        </div>
 
-                    <div className={"column middle"}>
-                        {gameId !== "" ? <MoveCard gameObj={gameObj} gameId={gameId} currTurn={currTurn} isWhite={isWhite} moves={moves} winner={gameObj.winner}/> : <></>}
-                    </div>
+                        <div className={"column middle"}>
+                            <MoveCard gameObj={gameObj} gameId={gameId} currTurn={currTurn} isWhite={isWhite} moves={moves} winner={gameObj.winner}/>
+                        </div>
 
-                    {/* Have Last Move & possiblity to draw & possibility to resign in this column */}
-                    <div className={"column right"}>
-                    </div>
+                        {/* Have Last Move & possiblity to draw & possibility to resign in this column */}
+                        <div className={"column right"}>
+                        </div>
                     </> 
                     : <></>}
 

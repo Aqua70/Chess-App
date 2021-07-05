@@ -7,7 +7,6 @@ const ndjson = require('ndjson')
 
 const checkRefresh = async (email, id) =>{
     let token = await firebaseObj.getTokenFromUser(email, id);
-
     // Lichess removed support for refresh tokens
     // console.log(token, token.expired());
     // if(token.expired()){
@@ -60,7 +59,8 @@ const abort = async (email, id, gameId) =>{
   return fetch(`https://lichess.org/api/board/game/${gameId}/abort`, {
     headers: {
       'Authorization': `Bearer ${token.access_token}`
-    }
+    },
+    method : "POST"
   }).then(res => res.body);
   
 }
@@ -71,7 +71,8 @@ const draw = async (email, id, gameId, accept) =>{
   return fetch(`https://lichess.org/api/board/game/${gameId}/draw/${accept}`, {
     headers: {
       'Authorization': `Bearer ${token.access_token}`
-    }
+    },
+    method : "POST"
   }).then(res => res.body);
   
 }
@@ -81,7 +82,8 @@ const resign = async (email, id, gameId) =>{
   return fetch(`https://lichess.org/api/board/game/${gameId}/resign`, {
     headers: {
       'Authorization': `Bearer ${token.access_token}`
-    }
+    },
+    method : "POST"
   }).then(res => res.body);
   
 } 
@@ -92,3 +94,4 @@ exports.getGameStream = getGameStream
 exports.makeMove = makeMove
 exports.abort = abort;
 exports.draw = draw;
+exports.resign = resign;

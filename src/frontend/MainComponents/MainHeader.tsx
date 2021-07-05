@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from "react";
-
-
-import {getUser} from "../BackendFunctions"
+import React, {useState } from "react";
 
 function Header( {setId} : any ){
     
@@ -9,7 +6,7 @@ function Header( {setId} : any ){
     const [link, setLink] = useState("");
 
     const parseLink = (link : string) : string => {
-        if (link.indexOf("/") == -1){
+        if (link.indexOf("/") === -1){
             return link;
         }
 
@@ -26,13 +23,13 @@ function Header( {setId} : any ){
     } 
 
     return(
-        <div>
+        <>
             <h1>Enter the id or link of the game you want to play!</h1>
             <form>
                 <input type="text" onChange={textChange}/>
                 <button type="submit" onClick={(e : any) => submitClick(e)}>Submit</button>
             </form>
-        </div>
+        </>
     )
 }
 

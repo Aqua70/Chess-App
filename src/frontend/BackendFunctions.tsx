@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { PassThrough } from 'stream';
 
 
 const getAuthLink = async () =>{
@@ -16,9 +15,9 @@ const getGameStream = async (id : string) : Promise<ReadableStreamDefaultReader<
     
     return fetch(`/gameStream/${id}`).then(res => {
         // TODO: throw error on res.body is undefined
+        
         return res.body?.getReader()
     });
-
 }
 
 const makeMove = async (move : string, gameId : string) =>{
@@ -27,18 +26,22 @@ const makeMove = async (move : string, gameId : string) =>{
 }
 
 
-const setCode = async (codeId : string) => {
-    const outcome = await axios.post("/setCode", {codeId});
+const abort = async (id : string) : Promise<Object> => {
+    const outcome = await axios.post(`/abort/${id}`);
     return outcome.data;
 }
 
-const setToken = async (codeId : string) =>{
-    const outcome = await axios.post("/setToken", {codeId});
+const draw = async (id : string, accept: string) : Promise<Object> => {
+    const outcome = await axios.post(`/draw/${id}/${accept}`);
+    return outcome.data;
+}
+
+const resign = async (id : string) : Promise<Object> => {
+    const outcome = await axios.post(`/resign/${id}`);
     return outcome.data;
 }
 
 
 
 
-
-export {getAuthLink, getUser, getGameStream, makeMove}
+export {getAuthLink, getUser, getGameStream, makeMove, abort, draw, resign}

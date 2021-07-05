@@ -1,10 +1,6 @@
 
 
-import React, { useEffect, useState, useRef } from "react";
-import { moveSyntheticComments } from "typescript";
-
-
-import {getUser, makeMove} from "../BackendFunctions"
+import React, { useEffect, useState } from "react";
 
 import "./MainTimerColumn.css";
 import StatusButtons from "./StatusButtons";
@@ -48,77 +44,75 @@ function Timer({color, isCurr, time} : any){
 }
 
 
-function TimerColumn({gameObj, isWhite, currTurn} : any){
+function TimerColumn({gameId, gameObj, isWhite, currTurn} : any){
 
     const [wTime, setWTime] = useState(0);
     const [bTime, setBTime] = useState(0);
     
-    const isTimerActive = () =>{
-        return !(gameObj.moves === undefined || gameObj.winner || gameObj.moves.length < 8 || gameObj.status === "aborted" || gameObj.status === "draw");
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    function interval(this: any, duration : number){
-        var _this = this
-        this.baseline = undefined
-        this.continue = true;
-        this.run = function(wTime : number, bTime : number){
-            if(_this.baseline === undefined){
-                _this.baseline = new Date().getTime()
-            }
-            if (!isTimerActive() || wTime === NO_TIME_LIMIT){
-                return
-            }
-            
-        
-            if (currTurn === "white" && wTime !== NO_TIME_LIMIT){
-                setWTime(wTime -TIME_INTERVAL);
-            }
-            else if (bTime !== NO_TIME_LIMIT){
-                setBTime(bTime - TIME_INTERVAL);
-            }
-            var end = new Date().getTime()
-            _this.baseline += duration
-        
-            var nextTick = duration - (end - _this.baseline)
-            if(nextTick<0){
-                nextTick = 0
-            }
-            _this.timer = setTimeout(function(){
-                if (_this.continue)
-                    _this.run(wTime - TIME_INTERVAL, bTime - TIME_INTERVAL)
-            }, nextTick)
-        }
-      
-        this.stop = function(){
-          clearTimeout(_this.timer)
-          _this.continue = false;
-        }
-    }
+    const isTimerActive = !(gameObj.moves === undefined || gameObj.winner || gameObj.moves.length < 8 || gameObj.status === "aborted" || gameObj.status === "draw");
     
 
     useEffect(()=>{
-
         setWTime(gameObj.wtime);
         setBTime(gameObj.btime);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        function interval(this: any, duration : number){
+            var _this = this
+            this.baseline = undefined
+            this.continue = true;
+            this.run = function(wTime : number, bTime : number){
+                if(_this.baseline === undefined){
+                    _this.baseline = new Date().getTime()
+                }
+                if (!isTimerActive || wTime === NO_TIME_LIMIT){
+                    return
+                }
+                
+            
+                if (currTurn === "white" && wTime !== NO_TIME_LIMIT){
+                    setWTime(wTime -TIME_INTERVAL);
+                }
+                else if (bTime !== NO_TIME_LIMIT){
+                    setBTime(bTime - TIME_INTERVAL);
+                }
+                var end = new Date().getTime()
+                _this.baseline += duration
+            
+                var nextTick = duration - (end - _this.baseline)
+                if(nextTick<0){
+                    nextTick = 0
+                }
+                _this.timer = setTimeout(function(){
+                    if (_this.continue)
+                        _this.run(wTime - TIME_INTERVAL, bTime - TIME_INTERVAL)
+                }, nextTick)
+            }
+        
+            this.stop = function(){
+            clearTimeout(_this.timer)
+            _this.continue = false;
+            }
+        }
         
         const timer = new (interval as any)(TIME_INTERVAL);
         timer.run(gameObj.wtime, gameObj.btime)
         return () =>{
             timer.stop()
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [gameObj])
 
 
     const getIsCurrMyClock = () =>{
-        if (!isTimerActive()){
+        if (!isTimerActive){
             return 0;
         }
-        return !isWhite && currTurn === "black" || isWhite && currTurn === "white"
+        return (!isWhite && currTurn === "black") || (isWhite && currTurn === "white")
     }
 
     const getIsCurrTheirClock = () =>{
-        if (!isTimerActive()){
+        if (!isTimerActive){
             return 0;
         }
         return !getIsCurrMyClock();
@@ -132,9 +126,12 @@ function TimerColumn({gameObj, isWhite, currTurn} : any){
             </div>
 
             <Timer color={isWhite ? "black" : "white"} time={isWhite ? bTime/1000 : wTime/1000} isCurr={getIsCurrTheirClock()}></Timer>
-
-            <div style={{height:"45%"} as React.CSSProperties}>
-                <StatusButtons></StatusButtons>
+            
+            <div style={{height:"45%", width:"100%"} as React.CSSProperties}>
+                <div style={{height:"10%"} as React.CSSProperties}></div>
+                <div style={{height:"90%", width:"100%"} as React.CSSProperties}>
+                    <StatusButtons gameObj={gameObj} gameId={gameId}></StatusButtons>
+                </div>
             </div>
 
             <Timer color={isWhite ? "white" : "black"} time={isWhite ? wTime/1000 : bTime/1000} isCurr={getIsCurrMyClock()}></Timer>

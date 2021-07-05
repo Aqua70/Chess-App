@@ -1,20 +1,16 @@
 
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Login from './Login'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
-  useParams,
-  useLocation
+  Redirect
 } from "react-router-dom";
 import Main from './Main'
 import {getUser} from "./BackendFunctions"
 import './App.css';
 import Loader from "react-loader-spinner";
-import  queryString from "query-string";
-import pkceObj from "./PKCE";
 
 function App() {
 
@@ -27,11 +23,9 @@ function App() {
                 <Login></Login>
             </Route>
 
-            <Route path="/:code?" component={MainPath}>
+            <Route path="/" component={MainPath}>
 
             </Route>
-
-  
             
           </Switch>
         </Router>
@@ -41,12 +35,11 @@ function App() {
 }
 
 function MainPath() {
-  const isEmpty = (obj : Object) =>{
-    return obj === "";
+  const isEmpty = (obj : any) =>{
+    return obj === "" || obj.error
   }
   const [user, setUser] = useState({});
   const [isBusy, setIsBusy] = useState(true);
-  const {search} = useLocation() as any
 
   useEffect(() =>{
     const effect = async () =>{

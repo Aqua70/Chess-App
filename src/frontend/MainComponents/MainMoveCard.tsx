@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 
 import "./MainMoveCard.css"
-import {getUser, makeMove} from "../BackendFunctions"
+import {makeMove} from "../BackendFunctions"
 
 function MoveCard({gameObj, gameId, currTurn, isWhite, moves, winner} : any){
     
@@ -25,12 +25,14 @@ function MoveCard({gameObj, gameId, currTurn, isWhite, moves, winner} : any){
                 setError("");
             }, 2000);
         }
-    } 
+    }
+
+    const myTurn = (currTurn === "white" && isWhite) || (currTurn !== "white" && !isWhite);
 
     return(
         <div className={"moveCard"}>
             <h1 className={"message"}>
-                {(currTurn === "white" && isWhite) || (currTurn !== "white" && !isWhite) ? "My" : "Opponent's"} turn {`(${currTurn})`}
+                {myTurn ? "My" : "Opponent's"} turn {`(${currTurn})`}
             </h1>
 
             <div className={"moveFormDiv"}>
@@ -49,7 +51,7 @@ function MoveCard({gameObj, gameId, currTurn, isWhite, moves, winner} : any){
                     <h1 className={"message"}>
                         My last move:
                         <br></br><br></br>
-                        {currTurn == "white" && isWhite || currTurn == "black" && !isWhite ? moves[moves.length - 2] : moves[moves.length - 1]}
+                        {myTurn ? moves[moves.length - 2] : moves[moves.length - 1]}
                     </h1>
                 </div>
 
@@ -57,7 +59,7 @@ function MoveCard({gameObj, gameId, currTurn, isWhite, moves, winner} : any){
                     <h1 className={"messages"}>
                         Opponent's last move:
                         <br></br><br></br>
-                        {currTurn == "white" && isWhite || currTurn == "black" && !isWhite ? moves[moves.length - 1] : moves[moves.length - 2]}
+                        {myTurn ? moves[moves.length - 1] : moves[moves.length - 2]}
                     </h1>
                 </div>
 
