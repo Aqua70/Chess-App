@@ -6,8 +6,9 @@ var ndjsonStream = require('can-ndjson-stream');
 const ndjson = require('ndjson')
 
 const checkRefresh = async (email, id) =>{
-
     let token = await firebaseObj.getTokenFromUser(email, id);
+
+    // Lichess removed support for refresh tokens
     // console.log(token, token.expired());
     // if(token.expired()){
     //     token = await token.refresh();
@@ -53,7 +54,41 @@ const makeMove = async (email, id, gameId, move) =>{
   }).then(res => res.json());
 }
 
+const abort = async (email, id, gameId) =>{
+  const token = await checkRefresh(email, id);
+
+  return fetch(`https://lichess.org/api/board/game/${gameId}/abort`, {
+    headers: {
+      'Authorization': `Bearer ${token.access_token}`
+    }
+  }).then(res => res.body);
+  
+}
+
+const draw = async (email, id, gameId, accept) =>{
+  const token = await checkRefresh(email, id);
+
+  return fetch(`https://lichess.org/api/board/game/${gameId}/draw/${accept}`, {
+    headers: {
+      'Authorization': `Bearer ${token.access_token}`
+    }
+  }).then(res => res.body);
+  
+}
+
+const resign = async (email, id, gameId) =>{
+  const token = await checkRefresh(email, id);
+  return fetch(`https://lichess.org/api/board/game/${gameId}/resign`, {
+    headers: {
+      'Authorization': `Bearer ${token.access_token}`
+    }
+  }).then(res => res.body);
+  
+} 
+
 exports.getUser = getUser
 exports.getEmail = getEmail
 exports.getGameStream = getGameStream
 exports.makeMove = makeMove
+exports.abort = abort;
+exports.draw = draw;

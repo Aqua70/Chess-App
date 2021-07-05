@@ -29,7 +29,6 @@ const storeToken = (email, id, token) =>{
 const getTokenFromUser = (email, id) => {
     return tokens.doc(email).get()
     .then((doc) => {
-
         if (!doc.exists || doc.data().id !== id){
             // TODO: throw error instead
             return -1
