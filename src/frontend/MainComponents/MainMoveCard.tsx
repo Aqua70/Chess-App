@@ -37,7 +37,7 @@ function MoveCard({gameObj, gameId, currTurn, isWhite, moves, winner} : any){
 
             <div className={"moveFormDiv"}>
                 <form className={"moveForm"} onSubmit={(e) => submitClick(e)}>
-                    <input className={"moveSubmit"} type="text" onChange={textChange}/>
+                    <input className={"moveSubmit"} type="text" onChange={textChange} placeholder={"Enter your move in UCI format"}/>
                 </form>
             </div>
 
@@ -49,15 +49,15 @@ function MoveCard({gameObj, gameId, currTurn, isWhite, moves, winner} : any){
 
                 <div className={"halfMessage"}>
                     <h1 className={"message"}>
-                        My last move:
+                        My <br></br>last move:
                         <br></br><br></br>
                         {myTurn ? moves[moves.length - 2] : moves[moves.length - 1]}
                     </h1>
                 </div>
 
                 <div className={"halfMessage"}>
-                    <h1 className={"messages"}>
-                        Opponent's last move:
+                    <h1 className={"message"}>
+                        Opponent's <br></br>last move:
                         <br></br><br></br>
                         {myTurn ? moves[moves.length - 1] : moves[moves.length - 2]}
                     </h1>

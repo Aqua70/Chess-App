@@ -1,25 +1,21 @@
 .timerContainer{
     height: 15%;
     width: 100%;
+    text-align: center;
+    
 }
 
 .timer{
-
-    display:inline-block;
-
+    font-size: 2vw;
+    display: inline-block;
     padding: 10px 20px 10px 20px;
 
 
-    position: relative;
+    /* position: relative;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-
-    /* width:50%; */
-    /* height: 100%; */
-
-
-    font-size: 70px;
+    transform: translate(-50%, -50%); */
+    font-size: 5vmin;
     border-radius: 40px;
 }
 
@@ -42,7 +38,7 @@
 
 .activeTimer{
     border: 2px solid black;
-    border-width: 8px;
+    border-width: 1vmin;
 
     animation-name: active;
     animation-duration: 1s;

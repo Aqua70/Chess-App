@@ -4,7 +4,7 @@
         border-radius:20px;
         width:60%;
         height:100%;
-        font-size: xx-large;
+        font-size: 2vw;
 }
 
 .moveForm{
@@ -24,7 +24,7 @@
 
 .message{
         text-align: center;
-        font-size: xx-large;
+        font-size: 4vmin;
         height: 10%;
         width: 100%;
 }
@@ -53,7 +53,7 @@
         text-align: center;
         height: 10%;
         width: 100%;
-        font-size: 300%;
+        font-size: 6vmin;
 }
 
 .lastMoves{

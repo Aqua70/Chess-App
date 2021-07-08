@@ -1,9 +1,9 @@
 .statusButton{
-    width: 33%;
+    width: 33.333%;
     height: 100%;
     box-sizing: border-box;
     border-radius: 5px;
-    margin: 0px 5px 0px 0px;
+    margin: 0px 2.5px 0px 2.5px;
     
 }
 
@@ -18,7 +18,7 @@
 
 .statusButtons{
     width: 100%;
-    height: 15%;
+    height: 20%;
     display: flex;
     flex-flow: row;
 }
@@ -37,6 +37,27 @@
 }
 
 .statusButtonInfo{
-    height: 55%;
+    height: 70%;
     width: 100%;
 }
+
+.opponentDraw{
+    width:100%;
+    height: 100%;
+    text-align: center;
+    /* background-color: aqua; */
+}
+
+.offerButton{
+    margin: 0 5px 0 0;
+    width:45%;
+    height: 90%;
+    border-radius: 10px;
+}
+
+.opponentDrawButtons{
+    height:60%;
+    width: 100%;
+}
+
+

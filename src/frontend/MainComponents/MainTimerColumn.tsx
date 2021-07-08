@@ -81,6 +81,14 @@ function TimerColumn({gameId, gameObj, isWhite, currTurn} : any){
             
                 var nextTick = duration - (end - _this.baseline)
                 if(nextTick<0){
+                    if (currTurn === "white" && wTime !== NO_TIME_LIMIT){
+                        setWTime(wTime + nextTick);
+                    }
+                    else if (bTime !== NO_TIME_LIMIT){
+                        setBTime(bTime + nextTick);
+                    }
+                    //console.log(nextTick);
+                    
                     nextTick = 0
                 }
                 _this.timer = setTimeout(function(){
@@ -122,18 +130,14 @@ function TimerColumn({gameId, gameObj, isWhite, currTurn} : any){
     return(
         <div style={{height:"100%", width: "100%", boxsizing: "border-box"} as React.CSSProperties}>
 
-            <div style={{height:"10%"} as React.CSSProperties}>
-            </div>
-
             <Timer color={isWhite ? "black" : "white"} time={isWhite ? bTime/1000 : wTime/1000} isCurr={getIsCurrTheirClock()}></Timer>
-            
-            <div style={{height:"45%", width:"100%"} as React.CSSProperties}>
-                <div style={{height:"10%"} as React.CSSProperties}></div>
-                <div style={{height:"90%", width:"100%"} as React.CSSProperties}>
-                    <StatusButtons gameObj={gameObj} gameId={gameId}></StatusButtons>
-                </div>
+                
+            <div style={{height:"10%", width:"100%"} as React.CSSProperties}></div>
+            <div style={{height:"40%", width:"100%"} as React.CSSProperties}>
+                <StatusButtons gameObj={gameObj} gameId={gameId} isWhite={isWhite}></StatusButtons>
             </div>
-
+            <div style={{height:"15%", width:"100%"} as React.CSSProperties}></div>
+            
             <Timer color={isWhite ? "white" : "black"} time={isWhite ? wTime/1000 : bTime/1000} isCurr={getIsCurrMyClock()}></Timer>
             
         </div>

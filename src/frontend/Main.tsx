@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import MainHeader from "./MainComponents/MainHeader"
 import MoveCard from "./MainComponents/MainMoveCard";
 import TimerColumn from "./MainComponents/MainTimerColumn";
-
+import Loader from "react-loader-spinner";
+import ChatCard from "./MainComponents/MainChatColumn";
 
 import {getGameStream} from "./BackendFunctions";
 import './Main.css';
@@ -14,6 +15,8 @@ function Main({user} : any){
     const [isWhite, setIsWhite] = useState(false);
     const [currTurn, setCurrTurn] = useState("white");
     const [gameObj, setGameObj] = useState({winner: ""})
+    const [loading, setLoading] = useState(false);
+    const [chatObj, setChatObj] = useState({});
 
     const [gotvalue, setGotvalue] = useState(false);
 
@@ -28,6 +31,7 @@ function Main({user} : any){
 
     const onIdUpdate = (id : string) =>{
         setGameId(id);
+        setLoading(true);
         getGameStream(id).then(stream =>{
             
             const readStream = () =>{
@@ -36,7 +40,8 @@ function Main({user} : any){
                     var string = new TextDecoder().decode(value);
                     
                     const jsons = string.split("\n");
-
+                    console.log(jsons);
+                    
                     jsons.forEach((json) =>{
 
                         try{
@@ -55,7 +60,7 @@ function Main({user} : any){
                                     setValues(stateObj);
                                 }
                                 else if (stateObj.type === "chatLine"){
-                                    // DO SOMETHING WITH CHAT
+                                    setChatObj(stateObj);
                                 }
                                 
                                 
@@ -78,7 +83,7 @@ function Main({user} : any){
                     readStream();
                 })
             }
-
+            setLoading(false);
             readStream();
         });
     }
@@ -93,7 +98,12 @@ function Main({user} : any){
 
 
             <div className={"row"}>
-                {gotvalue ?
+                {loading ? 
+                
+                <div className="loaderContainer">
+                    <Loader type="ThreeDots" color="dark" height="150px" width="150px"></Loader>
+                </div>
+                : gotvalue ?
                     <>
                         <div className={"column left"}>
                             <TimerColumn gameId={gameId} gameObj={gameObj} isWhite={isWhite} currTurn={currTurn}></TimerColumn>
@@ -105,6 +115,7 @@ function Main({user} : any){
 
                         {/* Have Last Move & possiblity to draw & possibility to resign in this column */}
                         <div className={"column right"}>
+                            <ChatCard chatObj={chatObj} gameId={gameId} loading={loading}></ChatCard>
                         </div>
                     </> 
                     : <></>}

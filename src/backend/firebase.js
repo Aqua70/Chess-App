@@ -38,6 +38,5 @@ const getTokenFromUser = (email, id) => {
 }
 
 
-
 exports.storeToken = storeToken
 exports.getTokenFromUser = getTokenFromUser

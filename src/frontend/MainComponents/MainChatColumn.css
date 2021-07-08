@@ -1,0 +1,32 @@
+.chatCard{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.messageViewer{
+    background-color: rgb(240, 240, 240);
+    text-align: left;
+    height: 70%;
+    width: 90%;
+    margin: auto;
+}
+
+.chatMessage{
+    text-align: left;
+    width: 100%;
+    font-size: 1.7vmin;
+    margin: 6px 0px 6px 0px
+}
+
+.submitMessageArea{
+    resize: none;
+    height: 15%;
+    width: 90%;
+    margin-top: 10px;
+    color: green;
+}
+
+.center{
+    text-align: center;
+}

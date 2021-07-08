@@ -4,7 +4,6 @@ const express = require('express');
 const oauthObj = require("./oauth");
 const firebaseObj = require("./firebase");
 const API = require('./API');
-const {encode} = require("base64-arraybuffer");
 const crypto = require('crypto');
 
 let guid = () => {
@@ -170,8 +169,8 @@ app.post("/draw/:id/:accept", async (req, res) =>{
   const email = req.cookies.email;
   const id = req.cookies.id;
 
-  console.log(accept, gameId);
-
+  // console.log(accept, gameId);
+  console.log(accept);
   if (!email || !id){
     res.end()
     return
