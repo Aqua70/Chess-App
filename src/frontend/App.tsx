@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState} from 'react'
 import Login from './Login'
 import {
   BrowserRouter as Router,
@@ -19,13 +19,10 @@ function App() {
         <Router>
           <Switch>
 
-            <Route path="/login">
-                <Login></Login>
-            </Route>
+            <Route path="/login" component={Login}/>
 
-            <Route path="/" component={MainPath}>
-
-            </Route>
+            <Route path="/" component={MainPath}/>
+            
             
           </Switch>
         </Router>

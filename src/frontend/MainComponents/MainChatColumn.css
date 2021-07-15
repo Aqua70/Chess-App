@@ -10,6 +10,7 @@
     height: 70%;
     width: 90%;
     margin: auto;
+    overflow: auto;
 }
 
 .chatMessage{
@@ -24,9 +25,13 @@
     height: 15%;
     width: 90%;
     margin-top: 10px;
-    color: green;
 }
 
 .center{
     text-align: center;
+}
+
+.chat{
+    margin-top: 10px;
+    margin-bottom: 5px;
 }

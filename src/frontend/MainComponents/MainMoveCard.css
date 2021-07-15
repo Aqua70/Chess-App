@@ -27,6 +27,7 @@
         font-size: 4vmin;
         height: 10%;
         width: 100%;
+        margin-top: 10px;
 }
 
 .bad{
@@ -54,6 +55,7 @@
         height: 10%;
         width: 100%;
         font-size: 6vmin;
+        margin-top: 10px;
 }
 
 .lastMoves{

@@ -41,7 +41,11 @@ const resign = async (id : string) : Promise<Object> => {
     return outcome.data;
 }
 
+const message = async (id : string, message : string) : Promise<Object> =>{
+    const outcome = await axios.post(`/message/${id}`, {message});
+    return outcome.data;
+}
 
 
 
-export {getAuthLink, getUser, getGameStream, makeMove, abort, draw, resign}
+export {getAuthLink, getUser, getGameStream, makeMove, abort, draw, resign, message}

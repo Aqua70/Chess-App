@@ -4,9 +4,6 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
-/* --- Fill in your app config here --- */
-
-
 const tokenEndpoint = process.env.TOKENENDPOINT;
 const redirect_uri = process.env.CALLBACK
 

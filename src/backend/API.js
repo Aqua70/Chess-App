@@ -86,7 +86,24 @@ const resign = async (email, id, gameId) =>{
     method : "POST"
   }).then(res => res.body);
   
-} 
+}
+
+const message = async (email, id, gameId, message) =>{
+
+  const token = await checkRefresh(email, id);
+  return fetch(`https://lichess.org/api/board/game/${gameId}/chat`, {
+    headers: {
+      'Authorization': `Bearer ${token.access_token}`,
+      'Content-Type': 'application/json'
+    },
+    body : JSON.stringify({
+      text : message,
+      room : "player"
+
+    }),
+    method : "POST"
+  }).then(res => res.json());
+}
 
 exports.getUser = getUser
 exports.getEmail = getEmail
@@ -95,3 +112,4 @@ exports.makeMove = makeMove
 exports.abort = abort;
 exports.draw = draw;
 exports.resign = resign;
+exports.message = message;

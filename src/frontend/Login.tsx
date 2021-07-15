@@ -1,16 +1,12 @@
 
 import {useEffect, useState } from 'react'
-import {
-  Link
-} from "react-router-dom";
 
-// import { encode as base64encode } from "base64-arraybuffer";
 
-// import Cookies from 'universal-cookie';
+
 import { getAuthLink } from './BackendFunctions';
+import Loader from "react-loader-spinner";
 
-
-
+import "./Login.css";
 
 
 function Login(){
@@ -31,11 +27,15 @@ function Login(){
 
 
     return(
-        <div>
-            <Link to="/">To home page</Link>
-            <br/>
-            {authLink !== "" ? <button className={"loginButton"} onClick={login}>Login using lichess</button> : "WAIT"}
-            <br/>
+        <div className={"loginContainer"}>
+            <h1 className={"welcomeText"}>
+                Welcome to blindchess!
+            </h1>
+            {authLink !== "" ? 
+            <div className={"loginButton"} onClick={login}>Click here to login using lichess</div> : 
+            // <Loader type="ThreeDots" color="dark" height="150px" width="150px"></Loader>
+            <></>
+            }
         </div>
     )
 }

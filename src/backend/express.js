@@ -83,7 +83,6 @@ app.get('/callback', async (req, res) => {
   const id = guid();
   
   firebaseObj.storeToken(emailObj.email, id, token);
-  console.log(token);
   res.cookie("email", emailObj.email, {maxAge: token.expires_in * 1000});
   res.cookie("id", id , {maxAge: token.expires_in * 1000});
 
@@ -123,17 +122,8 @@ app.get('/gameStream/:id', async (req, res) =>{
     }
 
     const game = await API.getGameStream(email, id, gameId);
-    // console.log(game);
-    // const stream = ndjson.parse();
 
     game.pipe(res);
-
-    // stream.on("data", (chunk) =>{
-    //   console.log(chunk);
-    // })
-
-    // stream.pipe(res);
-    // res.end();
 
 })
 
@@ -169,23 +159,18 @@ app.post("/draw/:id/:accept", async (req, res) =>{
   const email = req.cookies.email;
   const id = req.cookies.id;
 
-  // console.log(accept, gameId);
-  console.log(accept);
   if (!email || !id){
     res.end()
     return
   }
   const success = await API.draw(email, id, gameId, accept);
 
-  // success.on("data", (chunk)=>{
-  //   var string = new TextDecoder().decode(chunk);
-  //   console.log(string);
-  // })
+
 
   success.pipe(res);
 });
 
-app.post("/resign/:id/", async (req, res) =>{
+app.post("/resign/:id", async (req, res) =>{
   const gameId = req.params.id;
   const email = req.cookies.email;
   const id = req.cookies.id;
@@ -197,5 +182,22 @@ app.post("/resign/:id/", async (req, res) =>{
   const success = await API.resign(email, id, gameId);
   success.pipe(res);
 });
+
+app.post("/message/:id", async (req, res) =>{
+  const gameId = req.params.id;
+  const message = req.body.message;
+
+  const email = req.cookies.email;
+  const id = req.cookies.id;
+  
+  if (!email || !id){
+    res.end();
+    return
+  }
+
+  const success = await API.message(email, id, gameId, message);
+  
+  res.send(success);
+})
 
 app.listen(port, () => console.log(`Server started on port ${port}`));

@@ -15,6 +15,7 @@ function Timer({color, isCurr, time} : any){
         // The largest round integer less than or equal to the result of time divided being by 60.
         if (time === NO_TIME_LIMIT/1000){
             return "\u221e";
+            // return "Unlimited"
         }
         time = Math.floor(time);
 

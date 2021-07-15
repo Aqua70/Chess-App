@@ -115,7 +115,7 @@ function Main({user} : any){
 
                         {/* Have Last Move & possiblity to draw & possibility to resign in this column */}
                         <div className={"column right"}>
-                            <ChatCard chatObj={chatObj} gameId={gameId} loading={loading}></ChatCard>
+                            <ChatCard chatObj={chatObj} gameId={gameId}></ChatCard>
                         </div>
                     </> 
                     : <></>}

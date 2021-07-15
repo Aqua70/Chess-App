@@ -1,5 +1,6 @@
 import React, {useState } from "react";
 import { useEffect } from "react";
+import {message} from "../BackendFunctions";
 
 import "./MainChatColumn.css"
 
@@ -36,7 +37,7 @@ function MessagePanel({messages} : any){
     )
 }
 
-function ChatCard({gameId, chatObj, loading} : any){
+function ChatCard({gameId, chatObj} : any){
     
     const [messages, setMessages] = useState([] as messageObj[]);
     const [pastId, setPastId] = useState("");
@@ -66,11 +67,18 @@ function ChatCard({gameId, chatObj, loading} : any){
         if(e.repeat) return;
         if (e.key === "Enter"){
             e.preventDefault();
-
+            const textArea = document.querySelector(".submitMessageArea") as HTMLTextAreaElement
+            if (textArea.value === ""){
+                return;
+            }
             // SEND MESSAGE TO SERVER
+            textArea.disabled = true;
+            const success = await message(gameId, textArea.value);
+            
 
-
-            (document.querySelector(".submitMessageArea") as HTMLTextAreaElement).value = "";
+            textArea.value = "";
+            textArea.disabled = false;
+            textArea.focus();
         }
         
         
@@ -79,7 +87,7 @@ function ChatCard({gameId, chatObj, loading} : any){
 
     return(
         <div className={"chatCard"}>
-            <h1>
+            <h1 className={"chat"}>
                 Chat
             </h1>
             <div className={"messageViewer"}>
@@ -87,7 +95,7 @@ function ChatCard({gameId, chatObj, loading} : any){
             </div>
             {/* <div style={{height:"10%"} as React.CSSProperties}></div> */}
 
-            <textarea className={"submitMessageArea"} onKeyDown={(e) => sendMessage(e)} placeholder={"Enter your message"}/>
+            <textarea className={"submitMessageArea"} onKeyDown={(e) => sendMessage(e)} placeholder={"Enter your message. Don't spam or repeat your last message"}/>
 
         </div>
     )

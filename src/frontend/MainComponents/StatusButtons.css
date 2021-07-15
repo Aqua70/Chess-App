@@ -7,10 +7,12 @@
     
 }
 
+
 .icon{
     width: 40%;
     height: 100%;
 }
+
 
 .shadowed{
     box-shadow: 3px 3px 5px gray;
@@ -60,4 +62,8 @@
     width: 100%;
 }
 
+.statusMessage{
+    margin-top: 3px;
+    margin-bottom: 4px;
+}
 

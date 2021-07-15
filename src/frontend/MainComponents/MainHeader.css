@@ -1,0 +1,53 @@
+.idForm{
+    height: 50%;
+    width: 100%;
+}
+
+.idText{
+    height: 50%;
+    width: 30%;
+    font-size: 2vmin;
+}
+
+
+.headerText{
+    height: 40%;
+    width: 100%;
+}
+
+.headerContainer{
+    width: 100%;
+    height: 100%;
+}
+
+.idContainer{
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+@keyframes up-bump-login {
+    0% { top: 0.5vh; }
+    50% { top: 0.7vh; }
+    100% { top: 0.5vh; }
+  }
+
+
+.toLoginButton{
+    position: absolute;
+    right: 3px;
+    top: 0.5vh;
+    font-size: 1.5vw;
+    width: 7vw;
+    height: 2vh;
+
+    cursor: pointer;
+}
+
+.toLoginButton:hover{
+    font-weight:600;
+
+    animation: up-bump-login 0.4s linear;
+}
