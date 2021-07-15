@@ -1,4 +1,3 @@
-const axios = require('axios').default
 const fetch = require('node-fetch');
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();

@@ -4,7 +4,6 @@ import {useEffect, useState } from 'react'
 
 
 import { getAuthLink } from './BackendFunctions';
-import Loader from "react-loader-spinner";
 
 import "./Login.css";
 

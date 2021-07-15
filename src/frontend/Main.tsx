@@ -40,14 +40,11 @@ function Main({user} : any){
                     var string = new TextDecoder().decode(value);
                     
                     const jsons = string.split("\n");
-                    console.log(jsons);
                     
                     jsons.forEach((json) =>{
 
                         try{
                             var stateObj = JSON.parse(json);
-                            console.log(stateObj);
-                            
                             if (!stateObj.error){
                                 if (stateObj.type === "gameFull"){
                                     // This means this is the first call to read

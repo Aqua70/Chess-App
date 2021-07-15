@@ -1,9 +1,6 @@
 const fetch = require('node-fetch');
-const oauthObj = require("./oauth")
 const firebaseObj = require("./firebase")
 
-var ndjsonStream = require('can-ndjson-stream');
-const ndjson = require('ndjson')
 
 const checkRefresh = async (email, id) =>{
     let token = await firebaseObj.getTokenFromUser(email, id);

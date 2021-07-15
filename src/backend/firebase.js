@@ -1,16 +1,18 @@
 const firebase = require('firebase')
-const oauthObj = require("./oauth");
-require("firebase/firestore");
+
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAZIAGz06TTmV411kwDoMlAwcGPexyBQ7w",
-    authDomain: "chess-app-990ca.firebaseapp.com",
-    databaseURL: "https://chess-app-990ca-default-rtdb.firebaseio.com",
-    projectId: "chess-app-990ca",
-    storageBucket: "chess-app-990ca.appspot.com",
-    messagingSenderId: "627580634173",
-    appId: "1:627580634173:web:59d288a59d895623c91654",
-    measurementId: "G-Y43SKCBYQN"
+    apiKey: process.env.FIREBASE_APIKEY,
+    authDomain: process.env.FIREBASE_AUTHDOMAIN,
+    databaseURL: process.env.FIREBASE_DATABASEURL,
+    projectId: process.env.FIREBASE_PROJECTID,
+    storageBucket: process.env.FIREBASE_STORAGEBUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGINGSENDERID,
+    appId: process.env.FIREBASE_APPID,
+    measurementId: process.env.FIREBASE_MEASUREMENTID
 };
 
 

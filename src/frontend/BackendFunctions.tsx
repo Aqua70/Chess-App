@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+const APIpath = "";
 
 const getAuthLink = async () =>{
     const authObject = await axios.get("/auth");
@@ -13,7 +14,7 @@ const getUser = async () : Promise<Object> => {
 
 const getGameStream = async (id : string) : Promise<ReadableStreamDefaultReader<any> | undefined> =>{
     
-    return fetch(`/gameStream/${id}`).then(res => {
+    return fetch(`${APIpath}/gameStream/${id}`).then(res => {
         // TODO: throw error on res.body is undefined
         
         return res.body?.getReader()
@@ -21,28 +22,28 @@ const getGameStream = async (id : string) : Promise<ReadableStreamDefaultReader<
 }
 
 const makeMove = async (move : string, gameId : string) =>{
-    const outcome = await axios.post("/makeMove", {move, id : gameId});
+    const outcome = await axios.post(`${APIpath}/makeMove`, {move, id : gameId});
     return outcome.data;
 }
 
 
 const abort = async (id : string) : Promise<Object> => {
-    const outcome = await axios.post(`/abort/${id}`);
+    const outcome = await axios.post(`${APIpath}/abort/${id}`);
     return outcome.data;
 }
 
 const draw = async (id : string, accept: string) : Promise<Object> => {
-    const outcome = await axios.post(`/draw/${id}/${accept}`);
+    const outcome = await axios.post(`${APIpath}/draw/${id}/${accept}`);
     return outcome.data;
 }
 
 const resign = async (id : string) : Promise<Object> => {
-    const outcome = await axios.post(`/resign/${id}`);
+    const outcome = await axios.post(`${APIpath}/resign/${id}`);
     return outcome.data;
 }
 
 const message = async (id : string, message : string) : Promise<Object> =>{
-    const outcome = await axios.post(`/message/${id}`, {message});
+    const outcome = await axios.post(`${APIpath}/message/${id}`, {message});
     return outcome.data;
 }
 

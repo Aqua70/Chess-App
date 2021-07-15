@@ -65,9 +65,7 @@ function StatusButtons({gameObj, gameId, isWhite} : any){
         updateInfo(outcome, "Game aborted!", true);
     }
 
-    const drawClick = async (accept : string) =>{        
-        console.log(accept);
-        
+    const drawClick = async (accept : string) =>{          
         const outcome = await draw(gameId, accept);
 
         if (gameObj.moves.length < 8 || gameObj.status !== "started"){

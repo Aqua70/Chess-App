@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState } from "react";
 import { useEffect } from "react";
 import {message} from "../BackendFunctions";
@@ -47,9 +48,7 @@ function ChatCard({gameId, chatObj} : any){
             return
         }
         
-        if (pastId !== gameId){
-            console.log("ASD");
-            
+        if (pastId !== gameId){       
             setMessages([]);
         }
         else{
@@ -73,7 +72,7 @@ function ChatCard({gameId, chatObj} : any){
             }
             // SEND MESSAGE TO SERVER
             textArea.disabled = true;
-            const success = await message(gameId, textArea.value);
+            await message(gameId, textArea.value);
             
 
             textArea.value = "";

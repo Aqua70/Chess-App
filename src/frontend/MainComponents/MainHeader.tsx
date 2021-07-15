@@ -1,5 +1,4 @@
 import React, {useState } from "react";
-import { Redirect } from "react-router";
 import { useHistory } from "react-router";
 
 import "./MainHeader.css";
