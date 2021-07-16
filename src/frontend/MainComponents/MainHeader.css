@@ -41,9 +41,10 @@
     top: 0.5vh;
     font-size: 1.5vw;
     width: 7vw;
-    height: 2vh;
 
     cursor: pointer;
+
+    box-sizing: border-box;
 }
 
 .toLoginButton:hover{

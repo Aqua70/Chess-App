@@ -1,11 +1,15 @@
 var cookieParser = require('cookie-parser')
 const cors = require('cors')
 const express = require('express');
+const path = require("path");
+const crypto = require('crypto');
+const favicon = require('serve-favicon');
+
 const oauthObj = require("./oauth");
 const firebaseObj = require("./firebase");
 const API = require('./API');
 const { APIroute } = require("./expressAPI")
-const crypto = require('crypto');
+
 
 let guid = () => {
   let s4 = () => {
@@ -28,13 +32,20 @@ const port = process.env.PORT || 8087;
 
 const app = express();
 
+
+
 app.use(cors());
 
 app.use(cookieParser());
 
 app.use(express.json());
 
+app.use(favicon(path.join(__dirname, "../../build/favicon.ico")));
+app.use(express.static(path.join(__dirname, "../../build")))
+
+
 app.get("/auth", async (req, res) =>{
+  
     function makeid(length) {
       var result           = '';
       var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -45,9 +56,9 @@ app.get("/auth", async (req, res) =>{
       return result;
   }
 
+  const code_verifier = makeid(45);
+
   async function generateCodeChallenge() {
-    const code_verifier = makeid(45);
-    
     res.cookie("code", code_verifier);
 
     return crypto.createHash('sha256').update(code_verifier).digest('base64')
@@ -59,7 +70,7 @@ app.get("/auth", async (req, res) =>{
     const code_challenge = await generateCodeChallenge();
     return `${process.env.AUTHENDPOINT}?response_type=code&client_id=${client_id}&state=${makeid(50)}&scope=${scope}&redirect_uri=${redirect}&code_challenge=${code_challenge}&code_challenge_method=S256`
   }
-  res.send({link: await generateAuthuri()});
+  res.send({link: await generateAuthuri(), code_verifier});
 });
 
 
@@ -72,7 +83,7 @@ app.get('/callback', async (req, res) => {
 
   let token = await oauthObj.getTokenFromCode(code, code_verifier);
   if (token.error){
-    res.status(500).send(token.error_description);
+    res.status(500).send("There was a verification problem. Please try again. Make sure cookies are enabled");
     
     res.end();
     return;
@@ -93,5 +104,9 @@ app.get('/callback', async (req, res) => {
 });
 
 app.use("/", APIroute);
+
+app.get('*', (req, res) =>{
+  res.sendFile(path.join(__dirname, "../../build/index.html"));
+});
 
 app.listen(port, () => console.log(`Server started on port ${port}`));

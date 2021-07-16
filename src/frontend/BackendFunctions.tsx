@@ -2,9 +2,9 @@ import axios from 'axios'
 
 const APIpath = "";
 
-const getAuthLink = async () =>{
+const getAuthObj = async () =>{
     const authObject = await axios.get("/auth");
-    return authObject.data.link;
+    return authObject.data;
 }
 
 const getUser = async () : Promise<Object> => {
@@ -15,8 +15,6 @@ const getUser = async () : Promise<Object> => {
 const getGameStream = async (id : string) : Promise<ReadableStreamDefaultReader<any> | undefined> =>{
     
     return fetch(`${APIpath}/gameStream/${id}`).then(res => {
-        // TODO: throw error on res.body is undefined
-        
         return res.body?.getReader()
     });
 }
@@ -49,4 +47,4 @@ const message = async (id : string, message : string) : Promise<Object> =>{
 
 
 
-export {getAuthLink, getUser, getGameStream, makeMove, abort, draw, resign, message}
+export {getAuthObj, getUser, getGameStream, makeMove, abort, draw, resign, message}

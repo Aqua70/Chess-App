@@ -3,20 +3,18 @@ import {useEffect, useState } from 'react'
 
 
 
-import { getAuthLink } from './BackendFunctions';
+import { getAuthObj } from './BackendFunctions';
 
 import "./Login.css";
 
 
 function Login(){
     const [authLink, setAuthLink] = useState("");
-
     useEffect(()=>{
         const aFunc = async () =>{
-            const link = await getAuthLink();
-            setAuthLink(link);
+            const authOjb = await getAuthObj();
+            setAuthLink(authOjb.link);
         }
-        
         aFunc()
     }, [])
 
@@ -32,7 +30,6 @@ function Login(){
             </h1>
             {authLink !== "" ? 
             <div className={"loginButton"} onClick={login}>Click here to login using lichess</div> : 
-            // <Loader type="ThreeDots" color="dark" height="150px" width="150px"></Loader>
             <></>
             }
         </div>
