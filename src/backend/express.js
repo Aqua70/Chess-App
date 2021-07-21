@@ -47,7 +47,7 @@ app.use(express.static(path.join(__dirname, "../../build")))
 
 app.get("/auth", async (req, res) => {
   
-    function makeid(length) {
+  function makeid(length) {
       var result           = '';
       var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
       var charactersLength = characters.length;
@@ -90,11 +90,19 @@ app.get('/callback', async (req, res) => {
   }
 
   const emailObj  = await API.getEmail(token);
-  const id = guid();
   
+  var id;
+  if (await firebaseObj.exists(emailObj.email)){
+    id = await firebaseObj.getUserId(req.cookies.email);
+  }
+  else{
+    id = guid();
+  }
+
   firebaseObj.storeToken(emailObj.email, id, token);
-  res.cookie("email", emailObj.email, {maxAge: token.expires_in * 1000});
+
   res.cookie("id", id , {maxAge: token.expires_in * 1000});
+  res.cookie("email", emailObj.email, {maxAge: token.expires_in * 1000});
 
   res.writeHead(302, {
     Location: process.env.CALLBACK_REDIRECT,

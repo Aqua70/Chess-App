@@ -32,13 +32,31 @@ const getTokenFromUser = (email, id) => {
     return tokens.doc(email).get()
     .then((doc) => {
         if (!doc.exists || doc.data().id !== id){
-            // TODO: throw error instead
             return -1
         } 
         return doc.data().token;
     });
 }
 
+const getUserId = (email) =>{
+    return tokens.doc(email).get()
+    .then((doc) =>{
+        if (!doc.exists){
+            return -1;
+        }
+        return doc.data().id;
+    })
+}
+
+const exists = (email) =>{
+    return tokens.doc(email).get()
+    .then((doc) =>{
+        return doc.exists;
+    })
+}
+
 
 exports.storeToken = storeToken
 exports.getTokenFromUser = getTokenFromUser
+exports.getUserId = getUserId
+exports.exists = exists;
