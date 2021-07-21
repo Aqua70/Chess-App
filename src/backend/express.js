@@ -92,9 +92,9 @@ app.get('/callback', async (req, res) => {
   const emailObj  = await API.getEmail(token);
   
   var id;
-  const exists = firebaseObj.exists(emailObj.email);
+  const exists = await firebaseObj.exists(emailObj.email);
   if (exists){
-    id = await firebaseObj.getUserId(req.cookies.email);
+    id = await firebaseObj.getUserId(emailObj.email);
   }
   else{
     id = guid();
