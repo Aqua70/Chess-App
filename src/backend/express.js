@@ -4,6 +4,7 @@ const express = require('express');
 const path = require("path");
 const crypto = require('crypto');
 const favicon = require('serve-favicon');
+// const functions = require('firebase-functions');
 
 const oauthObj = require("./oauth");
 const firebaseObj = require("./firebase");
@@ -21,14 +22,14 @@ let guid = () => {
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
+// console.log("\n\n\n\n\n", process.env.NODE_ENV , "\n\n\n\n\n");
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 const redirect = process.env.CALLBACK;
 const scope = process.env.SCOPE;
 const client_id = process.env.ID;
-
-const port = process.env.PORT || 8087;
+const PORT = process.env.PORT || 8087;
 
 const app = express();
 
@@ -44,7 +45,7 @@ app.use(favicon(path.join(__dirname, "../../build/favicon.ico")));
 app.use(express.static(path.join(__dirname, "../../build")))
 
 
-app.get("/auth", async (req, res) =>{
+app.get("/auth", async (req, res) => {
   
     function makeid(length) {
       var result           = '';
@@ -57,9 +58,8 @@ app.get("/auth", async (req, res) =>{
   }
 
   const code_verifier = makeid(45);
-
+  res.cookie("code", code_verifier);
   async function generateCodeChallenge() {
-    res.cookie("code", code_verifier);
 
     return crypto.createHash('sha256').update(code_verifier).digest('base64')
     .replace(/\+/g, "-")
@@ -70,7 +70,7 @@ app.get("/auth", async (req, res) =>{
     const code_challenge = await generateCodeChallenge();
     return `${process.env.AUTHENDPOINT}?response_type=code&client_id=${client_id}&state=${makeid(50)}&scope=${scope}&redirect_uri=${redirect}&code_challenge=${code_challenge}&code_challenge_method=S256`
   }
-  res.send({link: await generateAuthuri(), code_verifier});
+  res.send({link: await generateAuthuri()});
 });
 
 
@@ -109,4 +109,5 @@ app.get('*', (req, res) =>{
   res.sendFile(path.join(__dirname, "../../build/index.html"));
 });
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
+app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+// module.exports.app = functions.https.onRequest(app);

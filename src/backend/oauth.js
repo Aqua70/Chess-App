@@ -21,7 +21,3 @@ const getTokenFromCode = (code, code_verifier) =>{
 };
 
 exports.getTokenFromCode = getTokenFromCode
-
-
-
-

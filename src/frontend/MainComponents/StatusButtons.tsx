@@ -90,7 +90,7 @@ function StatusButtons({gameObj, gameId, isWhite} : any){
 
     const resignClick = async () =>{
         const outcome = await resign(gameId);
-        const message = gameObj.moves.length < 8 ? "Game aborted!" : "Game resigned!"
+        const message = "";
         updateInfo(outcome, message, true);
     }
     

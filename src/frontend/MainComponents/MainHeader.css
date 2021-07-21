@@ -37,9 +37,9 @@
 
 .toLoginButton{
     position: absolute;
-    right: 3px;
+    right: 0px;
     top: 0.5vh;
-    font-size: 1.5vw;
+    font-size: 2vh;
     width: 7vw;
 
     cursor: pointer;
