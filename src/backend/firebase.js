@@ -41,9 +41,6 @@ const getTokenFromUser = (email, id) => {
 const getUserId = (email) =>{
     return tokens.doc(email).get()
     .then((doc) =>{
-        if (!doc.exists){
-            return -1;
-        }
         return doc.data().id;
     })
 }
