@@ -12,6 +12,10 @@ interface messageObj {
 }
 
 function MessagePanel({messages} : any){
+    useEffect(() =>{
+        var div = document.querySelector(".messageViewer") as HTMLDivElement;
+        div.scrollTop = div.scrollHeight;
+    })
     return(
         <>
 
